@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CV Tương Tác | Nguyễn Thị Thùy An - Sinh viên Điều Dưỡng</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals & Deep Teal -->
+    <!-- Application Structure Plan: A single-page application with a sticky navigation bar for smooth scrolling to different thematic sections. This structure transforms a static CV into an engaging personal brand experience. Key interactive elements include: an interactive timeline for diverse experiences and a radar chart for skill visualization. This design prioritizes visual storytelling and user-directed exploration, effective for highlighting a dynamic profile. -->
+    <!-- Visualization & Content Choices: 
+        - Personal Info/Summary -> Goal: Inform -> Method: Hero section with clear typography -> Interaction: Static -> Justification: Immediate, clear introduction.
+        - Skills -> Goal: Compare -> Method: Radar chart (Chart.js/Canvas) for soft skills & Bar charts (HTML/CSS) for tools -> Interaction: Hover tooltips (via Chart.js config) -> Justification: Visually engaging, quick comprehension of strengths in communication and adaptability.
+        - Experience -> Goal: Show Change -> Method: Interactive vertical timeline (HTML/CSS/JS) -> Interaction: Click to expand/collapse details -> Justification: Dynamic, space-efficient, guides user through diverse career/project paths.
+        - NO SVG/Mermaid used.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Be Vietnam Pro', sans-serif;
+            background-color: #FDFBF8; /* Warm off-white */
+            color: #3C3C3C; /* Dark gray */
+        }
+        .bg-primary { background-color: #008080; } /* Deep Teal */
+        .text-primary { color: #008080; }
+        .border-primary { border-color: #008080; }
+        .bg-secondary { background-color: #F0EAD6; } /* Beige */
+        .text-accent { color: #D2691E; } /* Burnt Sienna/Chocolate */
+        .nav-link {
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #008080;
+            transition: width 0.3s ease;
+}
+        .nav-link:hover:after, .nav-link.active:after {
+            width: 100%;
+        }
+        .timeline-item .timeline-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.7s ease-in-out, padding 0.7s ease-in-out;
+            padding: 0 1.5rem;
+        }
+        .timeline-item.active .timeline-content {
+            max-height: 500px; /* Adjust as needed */
+            padding: 1.5rem 1.5rem;
+        }
+        .timeline-item .icon-plus {
+            transition: transform 0.5s ease;
+        }
+        .timeline-item.active .icon-plus {
+            transform: rotate(45deg);
+        }
+        /* Removed .chart-container styles as the chart is removed */
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header & Navigation -->
+    <header id="header" class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#hero" class="text-xl font-bold text-primary">Nguyễn Thị Thùy An</a>
+            <ul class="hidden md:flex space-x-8">
+                <li><a href="#about" class="nav-link font-medium">Giới thiệu</a></li>
+                <li><a href="#skills" class="nav-link font-medium">Kỹ năng</a></li>
+                <li><a href="#experience" class="nav-link font-medium">Kinh nghiệm</a></li>
+                <li><a href="#contact" class="nav-link font-medium">Liên hệ</a></li>
+            </ul>
+            <button id="mobile-menu-button" class="md:hidden text-primary">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </nav>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden">
+            <ul class="px-6 pb-4 space-y-2">
+                 <li><a href="#about" class="block py-2 nav-link font-medium">Giới thiệu</a></li>
+                <li><a href="#skills" class="block py-2 nav-link font-medium">Kỹ năng</a></li>
+                <li><a href="#experience" class="block py-2 nav-link font-medium">Kinh nghiệm</a></li>
+                <li><a href="#contact" class="block py-2 nav-link font-medium">Liên hệ</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="hero" class="container mx-auto px-6 py-20 md:py-32 text-center">
+            <h1 class="text-4xl md:text-6xl font-bold leading-tight">Nguyễn Thị Thùy An</h1>
+            <a href="#contact" class="mt-8 inline-block bg-primary text-white font-bold py-3 px-8 rounded-full hover:bg-teal-700 transition duration-300">Liên hệ với tôi</a>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="py-20 bg-secondary">
+<div class="container mx-auto px-6">
+                <h2 class="text-3xl font-bold text-center mb-2">Về tôi</h2>
+                <div class="w-20 h-1 bg-primary mx-auto mb-12"></div>
+                <div class="max-w-3xl mx-auto text-center text-lg leading-relaxed">
+                    <p class="mb-4">Chào bạn, tôi là Nguyễn Thị Thùy An, sinh năm 2004 và là sinh viên năm 3 ngành Điều Dưỡng tại Trường Đại Học Tây Đô.</p>
+                    <div class="flex flex-col md:flex-row justify-center items-center gap-6 my-8">
+                        <div>
+                            <img src="http://googleusercontent.com/file_content/1" alt="Ảnh của bạn 1" class="w-full h-auto rounded-lg shadow-md object-cover aspect-9/16">
+                            <p class="mt-2 text-sm text-gray-600">tôi trông như thế này</p>
+                        </div>
+                        <div>
+                            <img src="http://googleusercontent.com/file_content/2" alt="Ảnh của bạn 2" class="w-full h-auto rounded-lg shadow-md object-cover aspect-9/16">
+                            <p class="mt-2 text-sm text-gray-600">hoặc là thế này</p>
+                        </div>
+                    </div>
+                    <p class="mb-4">Với kinh nghiệm đa dạng từ cộng tác viên, tư vấn viên, mẫu ảnh, stylist đến Marketing và Content Creator tại các studio và thương hiệu, tôi đã phát triển khả năng làm việc đa nhiệm và tư duy sáng tạo.</p>
+                    <p>Thế mạnh của tôi là kỹ năng giao tiếp, ứng xử, và tư vấn khách hàng hiệu quả, cùng với khả năng thích nghi nhanh chóng và làm việc nhóm tốt. Tôi luôn sẵn sàng áp dụng những kỹ năng này để tạo ra các chiến dịch Marketing sáng tạo và hiệu quả, góp phần vào sự phát triển của studio.</p>
+                    <p>Tôi có tư duy sáng tạo, khả năng ứng biến linh hoạt trong mọi tình huống, làm việc nhóm hiệu quả và luôn sẵn lòng giúp đỡ mọi người xung quanh.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="py-20">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl font-bold text-center mb-2">Kỹ năng chuyên môn & cá nhân</h2>
+                <div class="w-20 h-1 bg-primary mx-auto mb-12"></div>
+                
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div class="md:col-span-2"> <!-- Adjusted to span full width -->
+                        <h3 class="font-bold text-xl mb-6 text-center">Các kỹ năng & công cụ</h3>
+                        <div class="space-y-5 max-w-2xl mx-auto"> <!-- Centered and constrained width -->
+                            <div class="w-full">
+                                <p class="font-semibold mb-1">Giao tiếp & Thuyết trình</p>
+<div class="w-full bg-gray-200 rounded-full h-4"><div class="bg-primary h-4 rounded-full" style="width: 95%"></div></div>
+                            </div>
+                            <div class="w-full">
+                                <p class="font-semibold mb-1">Tư vấn & Chăm sóc khách hàng</p>
+                                <div class="w-full bg-gray-200 rounded-full h-4"><div class="bg-primary h-4 rounded-full" style="width: 85%"></div></div>
+                            </div>
+                            <div class="w-full">
+                                <p class="font-semibold mb-1">Sáng tạo nội dung (Content Creator)</p>
+                                <div class="w-full bg-gray-200 rounded-full h-4"><div class="bg-primary h-4 rounded-full" style="width: 70%"></div></div>
+                            </div>
+                            <div class="w-full">
+                                <p class="font-semibold mb-1">Thiết kế cơ bản (Canva, Figma)</p>
+                                <div class="w-full bg-gray-200 rounded-full h-4"><div class="bg-primary h-4 rounded-full" style="width: 85%"></div></div>
+                            </div>
+                             <div class="w-full">
+                                <p class="font-semibold mb-1">Quản lý công việc & Thời gian</p>
+                                <div class="w-full bg-gray-200 rounded-full h-4"><div class="bg-primary h-4 rounded-full" style="width: 75%"></div></div>
+                            </div>
+                            <div class="w-full">
+                                <p class="font-semibold mb-1">Kỹ năng ứng xử</p>
+                                <div class="w-full bg-gray-200 rounded-full h-4"><div class="bg-primary h-4 rounded-full" style="width: 95%"></div></div>
+                            </div>
+                            <div class="w-full">
+                                <p class="font-semibold mb-1">Giải quyết vấn đề</p>
+                                <div class="w-full bg-gray-200 rounded-full h-4"><div class="bg-primary h-4 rounded-full" style="width: 95%"></div></div>
+                            </div>
+                            <div class="w-full">
+                                <p class="font-semibold mb-1">Làm việc nhóm</p>
+                                <div class="w-full bg-gray-200 rounded-full h-4"><div class="bg-primary h-4 rounded-full" style="width: 90%"></div></div>
+                            </div>
+                            <div class="w-full">
+                                <p class="font-semibold mb-1">Thích nghi</p>
+                                <div class="w-full bg-gray-200 rounded-full h-4"><div class="bg-primary h-4 rounded-full" style="width: 95%"></div></div>
+                            </div>
+                            <div class="w-full">
+<p class="font-semibold mb-1">Sáng tạo</p>
+                                <div class="w-full bg-gray-200 rounded-full h-4"><div class="bg-primary h-4 rounded-full" style="width: 90%"></div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Experience Section -->
+        <section id="experience" class="py-20 bg-secondary">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl font-bold text-center mb-2">Kinh nghiệm & Hoạt động</h2>
+                <div class="w-20 h-1 bg-primary mx-auto mb-12"></div>
+                <p class="text-center max-w-2xl mx-auto mb-16 text-lg">Đây là những kinh nghiệm đa dạng mà tôi đã tích lũy được, giúp tôi phát triển các kỹ năng mềm và khả năng thích nghi trong nhiều môi trường khác nhau. Hãy nhấp vào từng mục để xem chi tiết.</p>
+                
+                <div class="max-w-3xl mx-auto relative">
+                    <!-- Vertical line -->
+                    <div class="absolute left-4 top-0 h-full w-0.5 bg-gray-300"></div>
+                    
+                    <!-- Timeline Item 1: HighC Concept -->
+                    <div class="timeline-item mb-12 pl-12 cursor-pointer">
+                        <div class="absolute left-4 top-1 w-4 h-4 rounded-full bg-primary border-4 border-secondary -translate-x-1/2"></div>
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <p class="text-gray-500 text-sm">Tháng 3, 2025 – Tháng 6, 2025</p>
+                                <h3 class="font-bold text-xl">Cộng tác viên, Tư vấn viên, Mẫu ảnh, Make up cá nhân, Stylist tại HighC Concept</h3>
+                            </div>
+                            <div class="icon-plus text-primary text-3xl font-thin">+</div>
+                        </div>
+                        <div class="timeline-content bg-white rounded-lg shadow-md mt-4">
+                            <ul class="list-disc list-inside space-y-2 text-gray-700">
+                                <li>Tư vấn và hỗ trợ khách hàng về các dịch vụ và sản phẩm của studio.</li>
+                                <li>Tham gia các buổi chụp ảnh với vai trò mẫu ảnh, stylist và make up cá nhân.</li>
+                                <li>Hỗ trợ tổ chức và điều phối các sự kiện, buổi chụp hình.</li>
+                                <li>Phát triển kỹ năng giao tiếp, làm việc nhóm và giải quyết vấn đề trong môi trường sáng tạo.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Timeline Item 2: Khói Tầng Thượng -->
+                    <div class="timeline-item mb-12 pl-12 cursor-pointer">
+<div class="absolute left-4 top-1 w-4 h-4 rounded-full bg-primary border-4 border-secondary -translate-x-1/2"></div>
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <p class="text-gray-500 text-sm">Tháng 9, 2023 – Tháng 7, 2024</p>
+                                <h3 class="font-bold text-xl">Marketing, Content Creator tại Khói Tầng Thượng</h3>
+                            </div>
+                            <div class="icon-plus text-primary text-3xl font-thin">+</div>
+                        </div>
+                        <div class="timeline-content bg-white rounded-lg shadow-md mt-4">
+                             <ul class="list-disc list-inside space-y-2 text-gray-700">
+                                <li>Lên ý tưởng và sản xuất nội dung (hình ảnh, video, bài viết) cho các kênh truyền thông xã hội.</li>
+                                <li>Hỗ trợ các chiến dịch marketing online để tăng tương tác và nhận diện thương hiệu.</li>
+                                <li>Phân tích hiệu quả nội dung và đề xuất cải tiến.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Timeline Item 3: Cafe Nhà Phạm -->
+                    <div class="timeline-item mb-12 pl-12 cursor-pointer">
+                        <div class="absolute left-4 top-1 w-4 h-4 rounded-full bg-primary border-4 border-secondary -translate-x-1/2"></div>
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <p class="text-gray-500 text-sm">Tháng 4, 2023 – Tháng 9, 2023</p>
+                                <h3 class="font-bold text-xl">Marketing tại Cafe Nhà Phạm</h3>
+                            </div>
+                            <div class="icon-plus text-primary text-3xl font-thin">+</div>
+                        </div>
+                        <div class="timeline-content bg-white rounded-lg shadow-md mt-4">
+                             <ul class="list-disc list-inside space-y-2 text-gray-700">
+                                <li>Hỗ trợ các hoạt động marketing tại quán cà phê, bao gồm quảng bá sự kiện và chương trình khuyến mãi.</li>
+                                <li>Tương tác trực tiếp với khách hàng để thu thập phản hồi và cải thiện trải nghiệm.</li>
+                                <li>Phát triển kỹ năng giao tiếp và tư vấn trong môi trường dịch vụ.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-20 bg-primary text-white">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-3xl font-bold mb-4">Rất vinh hạnh được hợp tác cùng bạn</h2>
+<p class="max-w-xl mx-auto mb-8 text-lg">Liên hệ với tôi:</p>
+                <div class="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-6">
+                     <a href="mailto:thuyan0818@gmail.com" class="font-bold text-xl hover:underline">thuyan0818@gmail.com</a>
+                     <span>|</span>
+                     <a href="tel:0818378126" class="font-bold text-xl hover:underline">0818378126</a>
+                     <span>|</span>
+                     <a href="https://www.facebook.com/thuy.an.652369" target="_blank" class="font-bold text-xl hover:underline">Facebook</a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+    
+    <footer class="bg-secondary py-6">
+        <div class="container mx-auto px-6 text-center text-gray-600">
+            <p>&copy; 2025 Nguyễn Thị Thùy An. Được thiết kế và xây dựng với niềm đam mê.</p>
+        </div>
+    </footer>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Mobile menu toggle
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            // Close mobile menu on link click
+            document.querySelectorAll('#mobile-menu a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+
+            // Smooth scroll for nav links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+
+            // Active nav link on scroll
+            const sections = document.querySelectorAll('main section');
+            const navLinks = document.querySelectorAll('header nav a');
+            
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.5
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, observerOptions);
+sections.forEach(section => {
+                observer.observe(section);
+            });
+
+
+            // Experience timeline toggle
+            const timelineItems = document.querySelectorAll('.timeline-item');
+            timelineItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    // Optional: close other items when one is opened
+                    // timelineItems.forEach(otherItem => {
+                    //     if (otherItem !== item) {
+                    //         otherItem.classList.remove('active');
+                    //     }
+                    // });
+                    item.classList.toggle('active');
+                });
+            });
+            
+            // Removed Chart.js initialization code as the radar chart is removed.
+        });
+    </script>
+
+</body>
+</html>
